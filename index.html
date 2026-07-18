@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080b17" />
+  <title>FF Tournament Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=3" />
+</head>
+<body>
+  <div class="noise"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">FF</div>
+      <div>
+        <p class="eyebrow">GESTOR DE COMPETENCIA</p>
+        <h1>FREE FIRE <span>TOURNAMENT</span></h1>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-secondary" id="exportBtn">Exportar</button>
+      <label class="btn btn-secondary file-btn">
+        Importar
+        <input type="file" id="importInput" accept="application/json" hidden />
+      </label>
+      <button class="btn btn-danger" id="resetBtn">Reiniciar</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel sidebar">
+      <div class="panel-title-row">
+        <div>
+          <p class="eyebrow">ADMINISTRACIÓN</p>
+          <h2>Participantes</h2>
+        </div>
+        <span class="counter" id="participantCounter">0/32</span>
+      </div>
+
+      <form id="participantForm" class="participant-form">
+        <input type="hidden" id="editingId" />
+
+        <label>
+          Nombre del jugador
+          <input id="nameInput" type="text" maxlength="28" placeholder="Ej. CarlosFF" required />
+        </label>
+
+        <label>
+          Equipo / Clan
+          <input id="teamInput" type="text" maxlength="24" placeholder="Ej. Wolves" />
+        </label>
+
+        <div class="form-grid">
+          <label>
+            UID
+            <input id="uidInput" type="text" maxlength="20" placeholder="Opcional" />
+          </label>
+          <label>
+            Región
+            <select id="regionInput">
+              <option value="Norteamérica">Norteamérica</option>
+              <option value="Latinoamérica">Latinoamérica</option>
+              <option value="Brasil">Brasil</option>
+              <option value="Europa">Europa</option>
+              <option value="Asia">Asia</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit" id="saveParticipantBtn">Agregar jugador</button>
+          <button class="btn btn-ghost hidden" type="button" id="cancelEditBtn">Cancelar</button>
+        </div>
+      </form>
+
+      <div class="toolbar">
+        <input id="searchInput" type="search" placeholder="Buscar jugador..." />
+        <button class="icon-btn" id="shuffleBtn" title="Mezclar participantes">⤨</button>
+      </div>
+
+      <div id="participantsList" class="participants-list"></div>
+
+      <div class="sidebar-footer">
+        <button class="btn btn-primary full" id="generateBracketBtn">Generar torneo</button>
+        <p>Admite 2, 4, 8, 16 o 32 participantes.</p>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="hero panel">
+        <div>
+          <p class="eyebrow">ELIMINACIÓN DIRECTA</p>
+          <h2 id="tournamentName">Torneo de Free Fire</h2>
+          <p class="hero-copy">Gestiona jugadores, cruces y ganadores desde un solo panel.</p>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <span id="statPlayers">0</span>
+            <small>Jugadores</small>
+          </div>
+          <div class="stat">
+            <span id="statMatches">0</span>
+            <small>Partidas</small>
+          </div>
+          <div class="stat champion-stat">
+            <span id="statChampion">—</span>
+            <small>Campeón</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel bracket-shell">
+        <div class="bracket-header">
+          <div>
+            <p class="eyebrow">CUADRO DEL TORNEO</p>
+            <h2>Llaves y enfrentamientos</h2>
+          </div>
+          <div class="legend">
+            <span><i class="dot active"></i> En juego</span>
+            <span><i class="dot winner"></i> Ganador</span>
+          </div>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">🏆</div>
+          <h3>Tu cuadro aparecerá aquí</h3>
+          <p>Agrega participantes y presiona “Generar torneo”.</p>
+        </div>
+
+        <div class="bracket-viewport hidden" id="bracketViewport">
+          <div id="bracket" class="bracket"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <template id="participantTemplate">
+    <article class="participant-card">
+      <div class="avatar"></div>
+      <div class="participant-info">
+        <strong></strong>
+        <span></span>
+      </div>
+      <div class="participant-actions">
+        <button class="mini-btn edit-btn" title="Editar">✎</button>
+        <button class="mini-btn delete-btn" title="Eliminar">×</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js?v=3"></script>
+</body>
+</html>
